@@ -1,0 +1,75 @@
+--- a/KernelSU/kernel/selinux/selinux.c	2024-12-14 08:14:31.460243500 -0500
++++ b/KernelSU/kernel/selinux/selinux.c	2024-12-14 08:20:22.110280155 -0500
+@@ -60,7 +60,7 @@
+ }*/
+ }
+ 
+-void setenforce(bool enforce)
++void ksu_setenforce(bool enforce)
+ {
+ #ifdef CONFIG_SECURITY_SELINUX_DEVELOP
+ #ifdef KSU_COMPAT_USE_SELINUX_STATE
+@@ -71,7 +71,7 @@
+ #endif
+ }
+ 
+-bool getenforce()
++bool ksu_getenforce()
+ {
+ #ifdef CONFIG_SECURITY_SELINUX_DISABLE
+ #ifdef KSU_COMPAT_USE_SELINUX_STATE
+--- a/kernel/sys.c	2024-12-14 08:28:22.681621671 -0500
++++ b/kernel/sys.c	2024-12-14 08:39:57.972646309 -0500
+@@ -1304,7 +1304,14 @@
+ 	bool is_gms = false;
+ 
+ 	down_read(&uts_sem);
++#ifdef CONFIG_KSU_SUSFS_SPOOF_UNAME
++	if (likely(!susfs_spoof_uname(&tmp)))
++		goto bypass_orig_flow;
++#endif
+ 	memcpy(&tmp, utsname(), sizeof(tmp));
++#ifdef CONFIG_KSU_SUSFS_SPOOF_UNAME
++bypass_orig_flow:
++#endif
+ 	up_read(&uts_sem);
+ 
+ 	rcu_read_lock();
+--- a/include/linux/mount.h	2024-12-15 03:36:55.311289800 -0500
++++ b/include/linux/mount.h	2024-12-15 03:37:50.525581383 -0500
+@@ -75,6 +75,10 @@
+ 	int mnt_flags;
+ 	struct user_namespace *mnt_userns;
+ 
++#ifdef CONFIG_KSU_SUSFS 
++	u64 android_kabi_reserved4; 
++#endif
++
+ 	ANDROID_KABI_RESERVE(1);
+ 	ANDROID_KABI_RESERVE(2);
+ 	ANDROID_KABI_RESERVE(3);
+--- a/include/linux/sched.h	2024-12-15 03:41:21.349675000 -0500
++++ b/include/linux/sched.h	2024-12-15 03:41:52.759768540 -0500
+@@ -1521,6 +1521,10 @@
+ 	ANDROID_KABI_RESERVE(7);
+ 	ANDROID_KABI_RESERVE(8);
+ 
++#ifdef CONFIG_KSU_SUSFS
++	u64 android_kabi_reserved8;
++#endif
++
+ 	/*
+ 	 * New fields for task_struct should be added above here, so that
+ 	 * they are included in the randomized portion of task_struct.
+--- a/include/linux/sched/user.h	2024-12-15 03:43:19.240018100 -0500
++++ b/include/linux/sched/user.h	2024-12-15 03:44:04.045990866 -0500
+@@ -34,6 +34,9 @@
+ 
+ 	/* Miscellaneous per-user rate limit */
+ 	struct ratelimit_state ratelimit;
++#ifdef CONFIG_KSU_SUSFS
++	u64 android_kabi_reserved2;
++#endif
+ 
+ 	ANDROID_KABI_RESERVE(1);
+ 	ANDROID_KABI_RESERVE(2);
