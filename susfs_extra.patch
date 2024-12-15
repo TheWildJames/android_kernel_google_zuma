@@ -28,12 +28,12 @@
 +extern int susfs_spoof_uname(struct new_utsname* tmp);
 +#endif
 +
-SYSCALL_DEFINE1(newuname, struct new_utsname __user *, name)
-{
-	 struct new_utsname tmp;
-	 struct task_struct *t;
+ SYSCALL_DEFINE1(newuname, struct new_utsname __user *, name)
+ {
+ 	struct new_utsname tmp;
+ 	struct task_struct *t;
  	bool is_gms = false;
- 
+
  	down_read(&uts_sem);
 +#ifdef CONFIG_KSU_SUSFS_SPOOF_UNAME
 +	if (likely(!susfs_spoof_uname(&tmp)))
