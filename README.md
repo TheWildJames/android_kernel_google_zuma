@@ -25,6 +25,7 @@ Follow the steps for GKI:
 
 - **KernelSU**: KernelSU is a root solution for Android GKI devices, it works in kernel mode and grants root permission to userspace applications directly in kernel space.
 - **SUSFS**: An addon root hiding kernel patches and userspace module for KernelSU.
+- **Sultan Kernel:**: A custom kernel built from the ground up.
 
 ---
 
@@ -32,6 +33,7 @@ Follow the steps for GKI:
 
 - **KernelSU**: Developed by [tiann](https://github.com/tiann).
 - **SUSFS**: Developed by [simonpunk](https://gitlab.com/simonpunk/susfs4ksu.git).
+- **Sultan Kernel**: Developed by [kerneltoast](https://github.com/kerneltoast/android_kernel_google_zuma).
 
 Special thanks to the open-source community for their contributions!
 
