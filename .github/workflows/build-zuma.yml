@@ -14,14 +14,6 @@ jobs:
           sudo apt update
           sudo apt install -y build-essential git curl patch sed zip
 
-      # Step 3: Create the root folder with a timestamped name
-      - name: Create root folder
-        run: |
-          ROOT_DIR="A15-SultanSU-$(date +'%Y-%m-%d-%I-%M-%p')-release"
-          echo "Creating root folder $ROOT_DIR..."
-          mkdir -p "$ROOT_DIR"
-          cd "$ROOT_DIR"
-
       # Step 4: Clone the repositories
       - name: Clone the repositories
         run: |
