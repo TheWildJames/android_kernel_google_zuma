@@ -10,21 +10,6 @@ on:
   #    - main  # Trigger on push to the main branch
   workflow_dispatch:
     inputs:
-      build_a12:
-        description: 'Build Android 12 kernel?'
-        required: true
-        type: boolean
-        default: true
-      build_a13:
-        description: 'Build Android 13 kernel?'
-        required: true
-        type: boolean
-        default: true
-      build_a14:
-        description: 'Build Android 14 kernel?'
-        required: true
-        type: boolean
-        default: true
       make_release:
         description: 'Do you want to create a release?'
         required: true
@@ -32,46 +17,21 @@ on:
         default: false
 
 jobs:
-  build-kernel-a12-5-10:
-    uses: ./.github/workflows/build-kernel-a12-5.10.yml
+  build-kernel-a15-zuma:
+    uses: ./.github/workflows/build-kernel-a15-zuma.yml
     secrets: inherit
-    if: ${{ github.event.inputs.build_a12 == 'true' || github.event.inputs.build_a12 == '' }}
-
-  build-kernel-a13-5-10:
-    uses: ./.github/workflows/build-kernel-a13-5.10.yml
-    secrets: inherit
-    if: ${{ github.event.inputs.build_a13 == 'true' || github.event.inputs.build_a13 == '' }}
-
-  build-kernel-a13-5-15:
-    uses: ./.github/workflows/build-kernel-a13-5.15.yml
-    secrets: inherit
-    if: ${{ github.event.inputs.build_a13 == 'true' || github.event.inputs.build_a13 == '' }}
-
-  build-kernel-a14-5-15:
-    uses: ./.github/workflows/build-kernel-a14-5.15.yml
-    secrets: inherit
-    if: ${{ github.event.inputs.build_a14 == 'true' || github.event.inputs.build_a14 == '' }}
-
-  build-kernel-a14-6-1:
-    uses: ./.github/workflows/build-kernel-a14-6.1.yml
-    secrets: inherit
-    if: ${{ github.event.inputs.build_a14 == 'true' || github.event.inputs.build_a14 == '' }}
 
   trigger-release:
     runs-on: ubuntu-latest
     timeout-minutes: 2160  # Set maximum timeout
     needs:
-        - build-kernel-a12-5-10
-        - build-kernel-a13-5-10
-        - build-kernel-a13-5-15
-        - build-kernel-a14-5-15
-        - build-kernel-a14-6-1
+        - build-kernel-a15-zuma
     if: ${{ github.event.inputs.make_release == 'true' }}
     env:
       REPO_OWNER: TheWildJames
-      REPO_NAME: GKI_KernelSU_SUSFS
+      REPO_NAME: android_kernel_google_zuma
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      RELEASE_NAME: "*TEST BUILD* GKI Kernels With KernelSU Next & SUSFS v1.5.3 *TEST BUILD*"
+      RELEASE_NAME: "*TEST BUILD* Sultan Kernel With KernelSU Next & SUSFS v1.5.3 *TEST BUILD*"
       RELEASE_NOTES: |
         This release contains KernelSU Next and SUSFS v1.5.3
         
@@ -100,6 +60,7 @@ jobs:
         Special thanks to the following people for their contributions!
         This helps me alot! <3
 
+        sultan - Created Kernel!
         simonpunk - Created SUSFS!
         sidex15 - Created module!
         backslashxx - Helped with patches!
