@@ -29,7 +29,8 @@ jobs:
 
       - name: Checkout the repository
         uses: actions/checkout@v3
-
+        with:
+          path: android_kernel_google_zuma
       - name: Clone AnyKernel3 and Other Dependencies
         run: |
           echo "Cloning AnyKernel3 and other dependencies..."
