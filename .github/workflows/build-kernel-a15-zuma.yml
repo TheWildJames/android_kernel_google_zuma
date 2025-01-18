@@ -18,6 +18,10 @@ jobs:
           remove-haskell: 'true'
           remove-codeql: 'true'
 
+      - name: Installing dependencies
+        run: |
+          sudo apt install -y gcc-aarch64-linux-gnu
+
       - name: Set CONFIG Environment Variable
         run: |
           CONFIG="android_kernel_google_zuma"
