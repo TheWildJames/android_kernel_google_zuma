@@ -5,7 +5,7 @@ permissions:
   actions: write   # Allows triggering actions
   
 on:
-  push:
+  #push:
   workflow_dispatch:
     inputs:
       make_release:
@@ -21,7 +21,6 @@ jobs:
 
   trigger-release:
     runs-on: ubuntu-latest
-    timeout-minutes: 2160  # Set maximum timeout
     needs:
         - build-kernel-a15-zuma
     if: ${{ github.event.inputs.make_release == 'true' }}
