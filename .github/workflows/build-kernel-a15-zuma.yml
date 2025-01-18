@@ -175,7 +175,7 @@ jobs:
           make zuma_defconfig -j$(nproc --all)
           make -j$(nproc --all)
 
-      - name: Create Bootimgs Folder and Copy Images
+      - name: Copy Images
         run: |
           echo "Changing to configuration directory: $CONFIG..."
           cd "$CONFIG"
