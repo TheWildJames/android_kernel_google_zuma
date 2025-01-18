@@ -96,8 +96,8 @@ jobs:
           echo "Changing to configuration directory: $CONFIG..."
           cd "$CONFIG"
           # Apply additional patch
-          cp ../kernel_patches/69_hide_stuff.patch ./
-          patch -p1 -F 3 < 69_hide_stuff.patch
+          cp ../kernel_patches/ksu_hooks.patch ./
+          patch -p1 --fuzz=3 < ./ksu_hooks.patch
 
       - name: Apply Hide Stuff Patches
         run: |
