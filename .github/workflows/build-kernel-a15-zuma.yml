@@ -75,8 +75,8 @@ jobs:
           patch -p1 --forward < 10_enable_susfs_for_ksu.patch || true
           
           # Change to common directory and apply SUSFS patch
-          cd ../common
-          patch -p1 < 50_add_susfs_in_gki-${{ matrix.android_version }}-${{ matrix.kernel_version }}.patch || true
+          cd ..
+          patch -p1 < 50_add_susfs_in_gki-android14-5.15.patch || true
           
       - name: Apply Next-SUSFS Patches
         run: |
@@ -112,8 +112,15 @@ jobs:
           echo "Changing to configuration directory: $CONFIG..."
           cd "$CONFIG"
           # Apply additional patch
-          cp ../kernel_patches/69_hide_stuff.patch ./
-          patch -p1 -F 3 < 69_hide_stuff.patch
+          cp ../kernel_patches/sys.c_fix.patch ./
+          patch -p1 --fuzz=3 < ./sys.c_fix.patch
+
+          cp ../kernel_patches/mount.h_fix.patch ./
+          patch -p1 --fuzz=3 < ./mount.h_fix.patch
+          cp ../kernel_patches/sched.h_fix.patch ./
+          patch -p1 --fuzz=3 < ./sched.h_fix.patch
+          cp ../kernel_patches/user.h_fix.patch ./
+          patch -p1 --fuzz=3 < ./user.h_fix.patch
 
           sed -i "s/poofed_size: '%u'/poofed_size: '%llu'/g" ./fs/susfs.c
           sed -i "s/length of string: %u/length of string: %lu/g" ./fs/susfs.c
