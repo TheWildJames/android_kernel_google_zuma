@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
         - build-kernel-a15-zuma
-    if: ${{ github.event.inputs.make_release == 'true' }}
+    if: ${{ inputs.make_release }}
     env:
       REPO_OWNER: TheWildJames
       REPO_NAME: android_kernel_google_zuma
